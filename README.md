@@ -43,7 +43,7 @@ Usage: jira [options] [command]
     info [issue]           Show only most important info about an issue
     status [issue] [status] Change the status of an issue
     issue <issue>          Set current jira issue number
-    comment [issue] [text] Comment an issue
+    comment [issue] [text] View or create comments for an issue
     assign [issue] [user]  Assign an issue to <user>. If no user is given, assign to me
     open [issue]           Open up an issue in your browser
     search [options] <searchTerm> Search for something in the main fields of tickets
@@ -53,6 +53,7 @@ Usage: jira [options] [command]
     alias <alias> <command> Create an alias for a jiracli command
     user <alias> <jiraName> Create an alias for a user on jira. Works with assign and comment (@user)
     config                 Change configuration
+    help                   Print README.md with more detailed help.
     *
 
   Options:
@@ -62,9 +63,18 @@ Usage: jira [options] [command]
 
 Some commands have individual usage help (using --help or -h)
 
+##### Settings File
 
-##### Specific Help
+Your settings file should be located in your home directory: ~/.jiracli. This is just a big JSON file. Feel free to edit it. Fields that you might want to change are:
 
+* listIgnoreStatuses - This is a list of strings of statuses that you want filtered out of the list command. ( ["Done", "QA"] )
+* issueListLimit - This stops an issue listing from getting too long.
+* alias - These are the aliases you have created in a dictionary. You can delete or edit them here too. The keys are the aliases and the values are the commands.
+* users - These are the user aliases you have created in a dictionary. You can delete or edit them here too. The keys are the aliases and the values are the jira names.
+
+##### Specific Help / Tips and Tricks
+
+* When you have a project set, you can just supply a number as an issue argument and jiracli will add on the project abbreviation automatically.
 * Remember that any commands that operate on an issue take an optional issue argument that will override the 'state machine'.
   - Use `jira issue` to change issues like you would use `git checkout` to change branches. Or just type `jira infer true` and let jiracli figure out the issue number.
 * If an argument needs to have spaces in it, use quotes around it. (e.g. jira comment "this is a comment").

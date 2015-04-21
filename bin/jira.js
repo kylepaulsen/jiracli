@@ -68,7 +68,7 @@ program
 
 program
 .command('comment [issue] [text]')
-.description('Comment an issue')
+.description('View or create comments for an issue')
 .action(function(issue, text) {
     inferCurrentIssue();
     if (text) {
@@ -147,6 +147,15 @@ program
 .description('Create an alias for a jiracli command')
 .action(function(alias, command) {
     commands.run('state:alias', arguments);
+})
+.on('--help', function() {
+    console.log('Alias will help you make custom commands. The command name is the first argument and the command to run is the second.')
+    console.log('  Examples:');
+    console.log();
+    console.log('    $ jira alias i info');
+    console.log('    $ jira alias start \'status "In Progress"\'');
+    console.log('    $ jira alias mine \'jql "assignee = kpauls AND resolution = Unresolved ORDER BY priority DESC, updated DESC"\'');
+    console.log();
 });
 
 
@@ -155,6 +164,15 @@ program
 .description('Create an alias for a user on jira. Works with assign and comment (@user)')
 .action(function(alias, command) {
     commands.run('state:addUser', arguments);
+})
+.on('--help', function() {
+    console.log('user will help you make nicknames for jira names. You can use these nicknames when assigning issues or commenting.')
+    console.log('  Examples:');
+    console.log();
+    console.log('    $ jira user kyle kpauls');
+    console.log('    $ jira assign kyle');
+    console.log('    $ jira comment \'@kyle fixed this.\'');
+    console.log();
 });
 
 
@@ -168,6 +186,17 @@ program
     .then(askForGitInfer)
     .then(auth.updateConfig)
     .done();
+});
+
+
+program
+.command('help')
+.description('Print README.md with more detailed help.')
+.action(function() {
+    var readmePath = path.join(__dirname, '..', 'README.md');
+    var readme = fs.readFileSync(readmePath, 'utf8');
+    console.log(readme);
+    console.log(("Printed README.md located at: " + readmePath).yellow);
 });
 
 
@@ -196,6 +225,9 @@ function askForJiraUrl() {
                 process.exit(1);
             }
             var jiraURL = result[promptStr];
+            if (!(/^http/).test(jiraURL)) {
+                jiraURL = 'https://' + jiraURL;
+            }
             if (jiraURL[jiraURL.length - 1] !== '/') {
                 jiraURL += '/';
             }
