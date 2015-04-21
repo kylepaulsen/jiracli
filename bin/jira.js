@@ -177,6 +177,14 @@ program
 
 
 program
+.command('warn <warnBool>')
+.description('Turn on or off certain warnings.')
+.action(function(onoff) {
+    commands.run('state:warn', arguments);
+});
+
+
+program
 .command('config')
 .description('Change configuration')
 .action(function() {
@@ -274,6 +282,7 @@ function inferCurrentIssue() {
     if (config.inferFromGit && config.currentProject) {
         var currentDir = process.cwd();
         var lastDir = '';
+        var warned = false;
         while (lastDir !== currentDir && !fs.existsSync(path.join(currentDir, '.git', 'HEAD'))) {
             lastDir = currentDir;
             currentDir = path.join(currentDir, '..');
@@ -285,16 +294,25 @@ function inferCurrentIssue() {
             if (possibleMatch) {
                 config.currentIssue = possibleMatch[0];
             } else {
-                console.warn('Warning: Could not parse issue number from git. Is branch named correctly? Is current project correct?: '.yellow + config.currentProject);
-                if (config.currentIssue) {
-                    console.warn('Falling back to last issue. Run \'jira infer false\' to turn off these warnings.'.yellow);
+                if (config.warn !== false) {
+                    warned = true;
+                    console.warn('Warning: Could not parse issue number from git. Is branch named correctly? Is current project correct?: '.yellow + config.currentProject);
+                    if (config.currentIssue) {
+                        console.warn('Falling back to last issue.'.yellow);
+                    }
                 }
             }
         } catch(e) {
-            console.warn('Warning: Could not parse issue number from git. May have failed to read .git/HEAD. Are you in your project dir?'.yellow);
-            if (config.currentIssue) {
-                console.warn('Falling back to last issue. Run \'jira infer false\' to turn off these warnings.'.yellow);
+            if (config.warn !== false) {
+                warned = true;
+                console.warn('Warning: Could not parse issue number from git. May have failed to read .git/HEAD. Are you in your project dir?'.yellow);
+                if (config.currentIssue) {
+                    console.warn('Falling back to last issue.'.yellow);
+                }
             }
+        }
+        if (warned) {
+            console.log('Run \'jira warn false\' to turn off these warnings.'.grey);
         }
     }
 }

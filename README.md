@@ -52,6 +52,7 @@ Usage: jira [options] [command]
     project <projectAbbreviation> Set current jira project. (For issue infering and filtering)
     alias <alias> <command> Create an alias for a jiracli command
     user <alias> <jiraName> Create an alias for a user on jira. Works with assign and comment (@user)
+    warn <warnBool>        Turn on or off certain warnings.
     config                 Change configuration
     help                   Print README.md with more detailed help.
     *
