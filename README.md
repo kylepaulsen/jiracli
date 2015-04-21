@@ -11,7 +11,7 @@ The core features / differences between this jira CLI and others are:
 
 ## Installation
 
-Not yet...
+    npm install -g jiracli
 
 ## Usage
 
