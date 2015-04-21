@@ -1,0 +1,30 @@
+{
+  "name": "jiracli",
+  "description": "Yet Another JIRA Command Line Interface",
+  "version": "0.0.1",
+  "author": "Kyle Paulsen <kyle.a.paulsen@gmail.com>",
+  "dependencies": {
+    "colors": "^1.0.3",
+    "commander": "~1.1.1",
+    "openurl": "^1.1.0",
+    "promise": "^7.0.0",
+    "prompt": "^0.2.14",
+    "request": "^2.55.0",
+    "tough-cookie": "^0.12.1"
+  },
+  "engines": {
+    "node": ">= 0.8"
+  },
+  "keywords": [
+    "jira",
+    "api",
+    "client",
+    "command",
+    "cli",
+    "tool"
+  ],
+  "license": "MIT",
+  "bin": {
+    "jira": "./bin/jira.js"
+  }
+}
